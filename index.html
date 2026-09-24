@@ -46,7 +46,7 @@ tfoot td{font-weight:500;border-top:2px solid #ccc;background:#fafaf8}
   <p>TD Athletes Edge | Custom Stretching | Net revenue (pack rates applied, comps at $0)</p>
 </div>
 <div class="container">
-  <div class="note">Revenue reflects actual payments: individual sessions at full price, pack sessions at per-session pack rate (e.g. 45m 4-Pack = $70/session, 8-Pack = $60.63/session), and complimentary sessions at $0.</div>
+  <div class="note">Revenue = actual payments collected (COMPLETED orders only). Includes individual session charges and pack purchases. Pack sessions and complimentary sessions show $0 on the order.</div>
   <div class="metric-grid" id="metrics"></div>
   <h2 class="section-title">Yearly summary</h2>
   <div class="card">
@@ -71,9 +71,9 @@ tfoot td{font-weight:500;border-top:2px solid #ccc;background:#fafaf8}
   <div style="margin:8px 0 32px"><button class="btn" onclick="exportCSV()">Export as CSV</button></div>
 </div>
 <script>
-const DATA = [{"m":"2026-01","s":8,"min":315,"r":67000},{"m":"2026-02","s":5,"min":225,"r":56000},{"m":"2026-03","s":6,"min":270,"r":68000},{"m":"2026-04","s":8,"min":345,"r":76000},{"m":"2026-05","s":5,"min":210,"r":53000},{"m":"2026-06","s":14,"min":600,"r":103063},{"m":"2026-07","s":4,"min":180,"r":42000},{"m":"2026-08","s":8,"min":300,"r":59251},{"m":"2026-09","s":8,"min":315,"r":75000}];
-const YEARS = {"2026":{"s":66,"min":2760,"r":599314,"months":9}};
-const BREAKDOWN = {"2026-01":[{"n":"Initial Custom Stretching","s":4,"min":180,"r":36000},{"n":"30m Custom Stretching","s":3,"min":90,"r":21000},{"n":"45min Custom Stretching","s":1,"min":45,"r":10000}],"2026-02":[{"n":"Initial Custom Stretching","s":3,"min":135,"r":36000},{"n":"45min Custom Stretching","s":2,"min":90,"r":20000}],"2026-03":[{"n":"Initial Custom Stretching","s":4,"min":180,"r":48000},{"n":"45min Custom Stretching","s":2,"min":90,"r":20000}],"2026-04":[{"n":"45min Custom Stretching","s":4,"min":180,"r":28000},{"n":"Initial Custom Stretching","s":4,"min":165,"r":48000}],"2026-05":[{"n":"Initial Custom Stretching","s":3,"min":120,"r":36000},{"n":"45min Custom Stretching","s":2,"min":90,"r":17000}],"2026-06":[{"n":"45min Custom Stretching","s":13,"min":570,"r":103063},{"n":"Initial Custom Stretching","s":1,"min":30,"r":0}],"2026-07":[{"n":"45min Custom Stretching","s":3,"min":135,"r":30000},{"n":"Initial Custom Stretching","s":1,"min":45,"r":12000}],"2026-08":[{"n":"30m Custom Stretching","s":4,"min":120,"r":23125},{"n":"Initial Custom Stretching","s":2,"min":90,"r":24000},{"n":"45min Custom Stretching","s":2,"min":90,"r":12126}],"2026-09":[{"n":"30m Custom Stretching","s":3,"min":90,"r":21000},{"n":"45min Custom Stretching","s":3,"min":135,"r":30000},{"n":"Initial Custom Stretching","s":2,"min":90,"r":24000}]};
+const DATA = [{"m":"2026-01","s":8,"min":315,"r":0},{"m":"2026-02","s":5,"min":225,"r":52000},{"m":"2026-03","s":6,"min":270,"r":64000},{"m":"2026-04","s":8,"min":345,"r":48000},{"m":"2026-05","s":5,"min":210,"r":22000},{"m":"2026-06","s":14,"min":600,"r":110500},{"m":"2026-07","s":4,"min":180,"r":22000},{"m":"2026-08","s":8,"min":300,"r":73500},{"m":"2026-09","s":8,"min":315,"r":31350}];
+const YEARS = {"2026":{"s":66,"min":2760,"r":423350,"months":9}};
+const BREAKDOWN = {"2026-01":[{"n":"Initial Custom Stretching","s":4,"min":180,"r":0},{"n":"30m Custom Stretching","s":3,"min":90,"r":0},{"n":"45m Custom Stretching","s":1,"min":45,"r":0}],"2026-02":[{"n":"Initial Custom Stretching","s":3,"min":135,"r":0},{"n":"45m Custom Stretching","s":2,"min":90,"r":0}],"2026-03":[{"n":"Initial Custom Stretching","s":4,"min":180,"r":0},{"n":"45m Custom Stretching","s":2,"min":90,"r":0}],"2026-04":[{"n":"45m Custom Stretching","s":4,"min":180,"r":0},{"n":"Initial Custom Stretching","s":4,"min":165,"r":0}],"2026-05":[{"n":"Initial Custom Stretching","s":3,"min":120,"r":0},{"n":"45m Custom Stretching","s":2,"min":90,"r":0}],"2026-06":[{"n":"45m Custom Stretching","s":13,"min":570,"r":0},{"n":"Initial Custom Stretching","s":1,"min":30,"r":0}],"2026-07":[{"n":"45m Custom Stretching","s":3,"min":135,"r":0},{"n":"Initial Custom Stretching","s":1,"min":45,"r":0}],"2026-08":[{"n":"30m Custom Stretching","s":4,"min":120,"r":0},{"n":"Initial Custom Stretching","s":2,"min":90,"r":0},{"n":"45m Custom Stretching","s":2,"min":90,"r":0}],"2026-09":[{"n":"30m Custom Stretching","s":3,"min":90,"r":0},{"n":"45m Custom Stretching","s":3,"min":135,"r":0},{"n":"Initial Custom Stretching","s":2,"min":90,"r":0}]};
 function fmt(cents){if(cents===0)return'\u2014';return'$'+(cents/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 const f24=DATA;
 const totalS=f24.reduce((a,d)=>a+d.s,0);
@@ -102,7 +102,7 @@ document.getElementById('yearBody').innerHTML=yearHtml;
 const labels=f24.map(d=>{const[y,mo]=d.m.split('-');return new Date(y,mo-1).toLocaleDateString('en-US',{month:'short',year:'2-digit'})});
 new Chart(document.getElementById('sessionChart'),{type:'bar',data:{labels,datasets:[{data:f24.map(d=>d.s),backgroundColor:'#e65100',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{autoSkip:false,maxRotation:45}}}}});
 new Chart(document.getElementById('revenueChart'),{type:'bar',data:{labels,datasets:[{data:f24.map(d=>Math.round(d.r/100)),backgroundColor:'#bf360c',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{autoSkip:false,maxRotation:45}},y:{ticks:{callback:v=>'$'+v.toLocaleString()}}}}});
-const svcColors={'30m Custom Stretching':'#e65100','45min Custom Stretching':'#bf360c','Initial Custom Stretching':'#ff8f00'};
+const svcColors={'30m Custom Stretching':'#e65100','45m Custom Stretching':'#bf360c','Initial Custom Stretching':'#ff8f00'};
 let ts=0,tm=0,tr=0,mh='';
 for(const d of f24){
   ts+=d.s;tm+=d.min;tr+=d.r;
